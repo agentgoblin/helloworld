@@ -25,8 +25,8 @@ Usage:
 def calculateSum(packet):
     '''Calculate 16-bit one's complement sum for packet
     '''
-    aligning = len(packet) % 4  # RFC729: If the total length is odd, the received data
-    packet += b'\x00' * aligning # is padded with one octet of zeros for computing the checksum.
+    if len(packet) % 2 != 0: # RFC729: If the total length is odd, the received data
+        packet += b'\x00' # is padded with one octet of zeros for computing the checksum.
     MOD = 1 << 16
     checksum = 0
     for i in range(0, len(packet), 2):
@@ -61,7 +61,7 @@ def icmpparse(rawPacket):
     packet['data'] = rawPacket[8:]
     return packet
 
-def icmpsend(host, filename, size=256):
+def icmpsend(host, filename, size=303):
     '''Send file via ICMP
     '''
     with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP) as src:
