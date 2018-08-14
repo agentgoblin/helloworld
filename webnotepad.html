@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+    window.onload = function() {
+        editor = document.getElementById('padtext');
+        if (typeof(Storage) !== "undefined") {
+            // Code for localStorage/sessionStorage.
+            editor.value = localStorage.getItem("padtext");
+            editor.disabled = false;
+        } else {
+            // Sorry! No Web Storage support..
+            editor.placeholder="localStorage unsupported by browser";
+            editor.disabled = true;
+        }
+    }
+
+    function save_action() {
+        editor = document.getElementById('padtext');
+
+        size = encodeURIComponent(editor.value).split(/%..|./).length - 1;
+        if (size < ((1 << 20) * 5)) {
+            localStorage.padtext = editor.value;
+            editor.value = localStorage.padtext;
+        }
+
+        // just debugging
+        rawcount_text = document.getElementById('rawcount');
+        rawcount_text.value = editor.value.length;
+
+        charcount_text = document.getElementById('charcount');
+        charcount_text.value = encodeURIComponent(editor.value).length;
+
+        bytecount_text = document.getElementById('bytecount');
+        bytecount_text.value = encodeURIComponent(editor.value).split(/%..|./).length - 1;
+        // ---
+
+    }
+    </script>
+</head>
+
+<body>
+    <form name="editor" method="post">
+        <textarea id="padtext" name="padtext" placeholder="write text here" autofocus rows="10" cols="30"></textarea><br>
+        <input type="button" name="savebutton" value="Схоронить" onclick="save_action();">
+        <input type="text" id="rawcount" name="rawcount">
+        <input type="text" id="charcount" name="charcount">
+        <input type="text" id="bytecount" name="bytecount">
+    </form>
+</body>
+
+</html>
