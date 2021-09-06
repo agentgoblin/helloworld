@@ -25,7 +25,7 @@ Usage:
 def calculateSum(packet):
     '''Calculate 16-bit one's complement sum for packet
     '''
-    if len(packet) % 2 != 0: # RFC729: If the total length is odd, the received data
+    if len(packet) % 2 != 0: # RFC792: If the total length is odd, the received data
         packet += b'\x00' # is padded with one octet of zeros for computing the checksum.
     MOD = 1 << 16
     checksum = 0
